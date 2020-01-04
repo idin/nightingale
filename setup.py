@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
 	name='nightingale',
-	version='1.5',
+	version='2019.12.29.4',
 	description='Python library for simplifying statistical analysis and making it more consistent',
 	long_description=long_description,
 	long_description_content_type='text/markdown',
@@ -17,7 +17,10 @@ setup(
 	author_email='py@idin.ca',
 	license='MIT',
 	packages=find_packages(exclude=("jupyter_tests")),
-	install_requires=['statsmodels', 'scipy', 'pandas'],
+	install_requires=[
+		'statsmodels', 'scipy', 'pandas', 'slytherin', 'numpy', 'chronometry', 'pensieve', 'sklearn',
+		'joblib', 'ravenclaw'
+	],
 	python_requires='~=3.6',
 	zip_safe=False
 )
