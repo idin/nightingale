@@ -9,3 +9,4 @@ from .Curve import Curve
 from .Sigmoid import Sigmoid
 from .perturb import perturb
 from .Perturber import Perturber
+from .Predictor import Predictor
