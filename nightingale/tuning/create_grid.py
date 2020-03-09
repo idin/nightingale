@@ -1,37 +1,6 @@
 from pandas import DataFrame
 
-
-def multiply_dictionary(dictionary, key, values):
-	"""
-	:type dictionary: dict
-	:type key: str
-	:type values: list
-	:rtype: list[dict]
-	"""
-	result = []
-	if not isinstance(values, (list, tuple)):
-		values = [values]
-
-	for value in values:
-		new_d = dictionary.copy()
-		new_d[key] = value
-		result.append(new_d)
-	return result
-
-
-
-def create_grid(dictionary):
-	"""
-	:param dict[str, list] dictionary: a dictionary of lists of parameter values
-	:rtype: list[dict[str,]]
-	"""
-	result = [{}]
-	for key, values in dictionary.items():
-		new_result = []
-		for dictionary in result:
-			new_result += multiply_dictionary(dictionary=dictionary, key=key, values=values)
-		result = new_result
-	return result
+from slytherin.collections import create_grid
 
 
 def create_model_grid(model, dictionary, name=None):
