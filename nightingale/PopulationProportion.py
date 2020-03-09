@@ -1,24 +1,19 @@
 # source: https://onlinecourses.science.psu.edu/stat100/node/56/
 # source: http://www.dummies.com/education/math/statistics/how-to-determine-the-confidence-interval-for-a-population-proportion/
 
-# main python libraries
+
 import math
-
-# idin's libraries
-import slytherin.numbers as sn
-
-# this library
 from .get_z_score import get_z_score
 
 def percent_str(x):
 	return f"{round(x*100, ndigits=2)}%"
+
 
 def get_population_proportion_error(group_n, sample_n, confidence=0.95):
 	p = group_n/sample_n
 	if p>1 or p<0: raise ValueError(f'p={p} is an invalid value.')
 	standard_error = math.sqrt(p*(1-p)/sample_n)
 	return standard_error*get_z_score(confidence=confidence)
-
 
 
 class PopulationProportion:
