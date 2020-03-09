@@ -1,11 +1,14 @@
 from sklearn.metrics import confusion_matrix
 import numpy as np
-from math import sqrt
 
 
 def evaluate_classification(actual, predicted):
 	actual = np.array(actual)
 	predicted = np.array(predicted)
+
+	# remove nas
+	predicted = predicted[np.logical_not(np.isnan(actual))]
+	actual = actual[np.logical_not(np.isnan(actual))]
 
 	cm = confusion_matrix(actual, predicted)
 
@@ -28,9 +31,20 @@ def evaluate_classification(actual, predicted):
 	threat_score = true_positive/(true_positive + false_negative + false_positive)
 	accuracy = (true_positive + true_negative)/(positive + negative)
 	f1_score = 2*true_positive/(2*true_positive + false_positive + false_negative)
-	matthews_correlation_coefficient = (true_positive * true_negative - false_positive * false_negative) / sqrt(
-		(true_positive + false_positive) * (true_positive + false_negative) * (true_negative + false_positive) * (true_negative + false_negative)
-	)
+	try:
+		matthews_correlation_coefficient = (true_positive * true_negative - false_positive * false_negative) / np.sqrt(
+			(true_positive + false_positive) * (true_positive + false_negative) * (true_negative + false_positive) * (true_negative + false_negative)
+		)
+	except Exception as e:
+		print(e)
+		print(
+			f'true_positive = {true_positive} ({type(true_positive)})',
+			f'true_negative = {true_negative} ({type(true_negative)})',
+			f'false_positive = {false_positive} ({type(false_positive)})',
+			f'false_negative = {false_negative} ({type(false_negative)})',
+			sep='\n'
+		)
+		raise e
 	informedness = sensitivity + specificity - 1
 	markedness = precision + negative_predictive_value - 1
 

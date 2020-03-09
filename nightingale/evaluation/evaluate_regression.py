@@ -47,6 +47,11 @@ normalized_mean_absolute_error = nmae
 def evaluate_regression(actual, predicted, raise_error=True, ignore_warnings=True):
 	actual = np.array(actual)
 	predicted = np.array(predicted)
+
+	# remove nas
+	predicted = predicted[np.logical_not(np.isnan(actual))]
+	actual = actual[np.logical_not(np.isnan(actual))]
+
 	_mae = _rmse = _mape = _nmae = None
 	try:
 		_mae = mae(actual, predicted)
