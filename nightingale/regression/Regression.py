@@ -133,6 +133,28 @@ class Regression:
 
 		return self._fit
 
+	@property
+	def parameters(self):
+		"""
+		:rtype: dict
+		"""
+		return dict(self.fit.params)
+
+	@property
+	def coef_(self):
+		return {key: value for key, value in self.parameters.items() if key.lower() != 'intercept'}
+
+	@property
+	def intercept_(self):
+		try:
+			return self.parameters['Intercept']
+		except KeyError:
+			return self.parameters['intercept']
+
+	@property
+	def feature_importances_(self):
+		return self.fit.feature_importances_
+
 	def predict(self, data):
 		return self.fit.predict(data)
 

@@ -1,4 +1,5 @@
-from .Logit_and_OLS import OLS, Logit
+from .LogisticRegression import LogisticRegression
+from .OLS import OLS
 from .GEE import GEE, LogisticGEE
 
 
@@ -27,7 +28,7 @@ def get_regression_model(formula, data, regression_type, groups, eliminate=False
 		if regression_type == 'linear':
 			model = OLS(data=data, formula=formula)
 		else:
-			model = Logit(data=data, formula=formula)
+			model = LogisticRegression(data=data, formula=formula)
 	else:
 		model = get_grouped_regression(
 			data=data, formula=formula, groups=groups, regression_type=regression_type
