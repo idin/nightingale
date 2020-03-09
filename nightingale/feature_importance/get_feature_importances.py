@@ -1,4 +1,4 @@
-def get_feature_importances(model, columns, raise_error, **kwargs):
+def get_feature_importances(model, columns, raise_error=True, **kwargs):
 	try:
 		importances = list(model.feature_importances_)
 	except AttributeError:

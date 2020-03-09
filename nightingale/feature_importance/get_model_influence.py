@@ -121,14 +121,8 @@ def get_model_influence(model, data, x_columns, num_points=200, num_threads=1, e
 		function = model.predict
 	except AttributeError:
 		function = model.pred
-	'''
-	return get_function_influence(
-		function=function, data=data, x_columns=x_columns, num_deltas=num_deltas, num_threads=num_threads,
-		echo=echo
-	)
-	'''
 
 	simulator = InfluenceSimulator(
-		data=data, function=function, num_threads=num_threads, num_points=num_points
+		data=data[x_columns], function=function, num_threads=num_threads, num_points=num_points
 	)
 	return simulator.simulate(echo=echo)

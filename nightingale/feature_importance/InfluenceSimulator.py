@@ -42,6 +42,7 @@ class InfluenceSimulator:
 
 	def get_influencers(self, column_name):
 		upper = self._sds[column_name]
+
 		if upper == 0:
 			if self._means[column_name] == 0:
 				lower, upper = -1, 1
@@ -70,8 +71,12 @@ class InfluenceSimulator:
 
 		if self._num_threads == 1:
 
-			self._means = {np.nanmean(column) for column in self.numeric_columns}
-			self._sds = {np.nanstd(column) for column in self.numeric_columns}
+			self._means = {
+				name: np.nanmean(column) for name, column in zip(self._numeric_column_names, self.numeric_columns)
+			}
+			self._sds = {
+				name: np.nanstd(column) for name, column in zip(self._numeric_column_names, self.numeric_columns)
+			}
 			self._influencers = {
 				column_name: self.get_influencers(column_name=column_name)
 				for column_name in self._numeric_column_names
