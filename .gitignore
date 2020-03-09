@@ -1,3 +1,6 @@
 build
 nightingale.egg-info
 dist
+nightingale/minimization/__pycache__
+debug.log
+Untitled.ipynb

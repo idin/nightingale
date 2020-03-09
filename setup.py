@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
 	name='nightingale',
-	version='2019.12.29.4',
+	version='2020.1.31',
 	description='Python library for simplifying statistical analysis and making it more consistent',
 	long_description=long_description,
 	long_description_content_type='text/markdown',
