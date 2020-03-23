@@ -32,6 +32,25 @@ pip install nightingale
 
 # Usage
 
+## Shannon's Entropy
+
+```python
+from nightingale import entropy
+import numpy as np
+
+x = np.random.choice(np.arange(1, 7), size=1000, p=[0.1, 0.05, 0.05, 0.2, 0.4, 0.2])
+y = x + np.random.uniform(low=0, high=3, size=1000) < 3 
+print('H(x)=', entropy.get_entropy(x))
+print('H(y, x)=', entropy.get_conditional_entropy(y, x))
+print('G(y, x)=', entropy.get_information_gain(y, x))
+```
+**output:** 
+```text
+H(x)= 2.2398258260443384
+H(y, x)= 0.12189402130109395
+G(y, x)= 0.2767517685048818
+```
+
 ## Population Proportion
 
 ```python
