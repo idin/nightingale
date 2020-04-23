@@ -7,7 +7,7 @@ def get_coefficients(model, columns, raise_error=True, **kwargs):
 			coefficients = list(coef.flatten())
 		except:
 			coefficients = list(coef)
-	except AttributeError:
+	except (AttributeError, KeyError):
 		return None
 
 	try:

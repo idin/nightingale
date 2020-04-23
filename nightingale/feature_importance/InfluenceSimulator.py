@@ -66,40 +66,44 @@ class InfluenceSimulator:
 
 	def _calculate_statistics(self):
 		output = self._function(self._data)
-		self._output_mean = np.nanmean(output)
-		self._output_sd = np.nanstd(output)
+		try:
+			self._output_mean = np.nanmean(output)
+			self._output_sd = np.nanstd(output)
 
-		if self._num_threads == 1:
+			if self._num_threads == 1:
 
-			self._means = {
-				name: np.nanmean(column) for name, column in zip(self._numeric_column_names, self.numeric_columns)
-			}
-			self._sds = {
-				name: np.nanstd(column) for name, column in zip(self._numeric_column_names, self.numeric_columns)
-			}
-			self._influencers = {
-				column_name: self.get_influencers(column_name=column_name)
-				for column_name in self._numeric_column_names
-			}
+				self._means = {
+					name: np.nanmean(column) for name, column in zip(self._numeric_column_names, self.numeric_columns)
+				}
+				self._sds = {
+					name: np.nanstd(column) for name, column in zip(self._numeric_column_names, self.numeric_columns)
+				}
+				self._influencers = {
+					column_name: self.get_influencers(column_name=column_name)
+					for column_name in self._numeric_column_names
+				}
 
-		else:
-			means = self.parallel_process(
-				delayed(np.nanmean)(column) for column in self.numeric_columns
-			)
-			self._means = {name: mean for name, mean in zip(self._numeric_column_names, means)}
+			else:
+				means = self.parallel_process(
+					delayed(np.nanmean)(column) for column in self.numeric_columns
+				)
+				self._means = {name: mean for name, mean in zip(self._numeric_column_names, means)}
 
-			sds = self.parallel_process(
-				delayed(np.nanstd)(column) for column in self.numeric_columns
-			)
-			self._sds = {name: sd for name, sd in zip(self._numeric_column_names, sds)}
+				sds = self.parallel_process(
+					delayed(np.nanstd)(column) for column in self.numeric_columns
+				)
+				self._sds = {name: sd for name, sd in zip(self._numeric_column_names, sds)}
 
-			influence_lists = self.parallel_process(
-				delayed(self.get_influencers)(column) for column in self._numeric_column_names
-			)
-			self._influencers = {
-				column_name: influence_list
-				for column_name, influence_list in zip(self._numeric_column_names, influence_lists)
-			}
+				influence_lists = self.parallel_process(
+					delayed(self.get_influencers)(column) for column in self._numeric_column_names
+				)
+				self._influencers = {
+					column_name: influence_list
+					for column_name, influence_list in zip(self._numeric_column_names, influence_lists)
+				}
+		except AttributeError:
+			self._output_mean = None
+			self._output_sd = None
 
 	def get_single_influence(self, column, perturbation, function):
 		new_data = self._data.drop(columns=column)
