@@ -7,8 +7,11 @@ def evaluate_classification(actual, predicted):
 	predicted = np.array(predicted)
 
 	# remove nas
-	predicted = predicted[np.logical_not(np.isnan(actual))]
-	actual = actual[np.logical_not(np.isnan(actual))]
+	try:
+		predicted = predicted[np.logical_not(np.isnull(actual))]
+		actual = actual[np.logical_not(np.isnan(actual))]
+	except:
+		pass
 
 	cm = confusion_matrix(actual, predicted)
 
