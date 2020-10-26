@@ -134,13 +134,21 @@ class InfluenceSimulator:
 		if self._num_threads == 1:
 			result = [
 				_get_influence(column=column, perturbation=perturbation, function=self._function)
-				for column, influences in iterate(self._influencers.items(), progress_bar=progress_bar)
+				for column, influences in iterate(
+					self._influencers.items(),
+					progress_bar=progress_bar,
+					text='measuring influence ...'
+				)
 				for perturbation in influences
 			]
 		else:
 			result = self.parallel_process(
 				delayed(_get_influence)(column=column, perturbation=perturbation, function=deepcopy(self._function))
-				for column, influences in iterate(self._influencers.items(), progress_bar=progress_bar)
+				for column, influences in iterate(
+					self._influencers.items(),
+					progress_bar=progress_bar,
+					text='measuring influence in parallel ...'
+				)
 				for perturbation in influences
 			)
 
