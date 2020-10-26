@@ -1,4 +1,7 @@
 from pandas import DataFrame
+from sklearn.linear_model import LinearRegression
+from sklearn.base import MultiOutputMixin
+from sklearn.base import RegressorMixin
 
 from slytherin.collections import create_grid
 
@@ -19,7 +22,16 @@ def create_model_grid(model, dictionary, name=None):
 
 
 class ModelGrid:
-	def __init__(self, models, grid_dictionaries):
+	def __init__(self, grid_dictionaries, models=None):
+		"""
+		:type grid_dictionaries: list[dict] or dict
+		:type models: LinearRegression or MultiOutputMixin or RegressorMixin
+		"""
+		if models is None:
+			models = [x['model'] for x in grid_dictionaries]
+			for grid_dict in grid_dictionaries:
+				del grid_dict['model']
+
 		if not isinstance(models, list):
 			models = [models]
 
