@@ -244,8 +244,11 @@ x2 = [6, 7, 8, 9, 10]
 y1 = [1, 2, 3, 4, 5]
 y2 = [6, 7, 8, 9, 10]
 
-ng.scatter_plot(x={'group1': x1, 'group2': x2}, y=y1) # This will use different colours for the two lines defined by x1 and x2 and uses the keys of the dictionary to label the lines in the legend
-ng.scatter_plot(x=x1, y={'group1': y1, 'group2': y2}) # This will use different colours for the two lines defined by y1 and y2 and uses the keys of the dictionary to label the lines in the legend
+# This will use different colours for the two lines defined by x1 and x2 and uses the keys of the dictionary to label the lines in the legend
+ng.scatter_plot(x={'group1': x1, 'group2': x2}, y=y1) 
+# This will use different colours for the two lines defined by y1 and y2 and uses the keys of the dictionary to label the lines in the legend
+ng.scatter_plot(x=x1, y={'group1': y1, 'group2': y2}) 
+
 
 ```
 
