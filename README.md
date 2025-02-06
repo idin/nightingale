@@ -41,7 +41,6 @@ This software **may NOT** be used, modified, or distributed by:
 - Political parties, think tanks, and advocacy groups that support authoritarianism, white supremacy, or fascism.
 - Individuals and businesses affiliated with Donald Trump or his political organizations.
 - Companies and organizations that deny or obstruct climate science or promote climate disinformation.
-- Companies engaged in union-busting, exploitative labor practices, or worker surveillance.
 - Media outlets that propagate hate speech, conspiracy theories, or extreme political propaganda.
 - Companies profiting from war, mass surveillance, and militarization.
 

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='nightingale',
     version='0.1.0',
-    author='Idin Karuei',
+    author='Idin K',
     author_email='python@idin.net',
     description='A Python package for creating interactive visualizations and plots using Plotly. Nightingale simplifies the process of generating various types of plots, including scatter plots, line plots, and density plots, with customizable options for colours, sizes, and more.',
     packages=find_packages(),
