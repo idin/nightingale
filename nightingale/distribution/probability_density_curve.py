@@ -6,8 +6,9 @@ from scipy.stats import gaussian_kde
 import plotly.express as px
 
 def probability_density_curve(
-    x: Union[pd.Series, np.ndarray, list, str],
+    x: Union[pd.Series, np.ndarray, str],
     df: Optional[pd.DataFrame] = None,
+    x_label: Optional[str] = 'x',
     n: int = 100,
     group_by: Optional[Union[str, list]] = None,
     y: Optional[str] = 'density',
@@ -19,6 +20,14 @@ def probability_density_curve(
     Create a density curve, optionally decomposed by group in a way that sums
     to the global KDE. Uses a vectorized approach to avoid slow Python loops.
     """
+    # df should be provided if x is a column name
+    if isinstance(x, str) and df is None:
+        raise ValueError("df must be provided if x is a column name")
+    elif isinstance(x, list):
+        # x cannot be a list of strings
+        if any(isinstance(item, str) for item in x):
+            raise TypeError("x cannot be a list of strings")
+
 
     # --- Helper function for univariate Gaussian ---
     def gauss(u):
@@ -29,14 +38,17 @@ def probability_density_curve(
         # Single KDE over all data
         if isinstance(x, str):
             x_label = x
-            x_vals = df[x].to_numpy()
+            x_vals = df[x].to_numpy(dtype=np.float64)
+
         else:
-            x_label = 'x'
-            x_vals = np.array(x)
+            x_label = x_label or 'x'
+            x_vals = np.array(x, dtype=np.float64)
+
 
         # Fit global KDE with desired bandwidth
         kde = gaussian_kde(x_vals)
         if bw_method is not None:
+
             kde.set_bandwidth(bw_method=bw_method)
 
         # Evaluate over requested range
@@ -56,13 +68,16 @@ def probability_density_curve(
             raise ValueError("group_by must be a column name, df must be provided, and x must be str.")
 
         # Extract data for global KDE
-        x_vals = df[x].to_numpy()
+        # x_vals = df[x].to_numpy() 
+        x_vals = df[x].to_numpy(dtype=np.float64) # to fix the error TypeError: The `dtype` and `signature` arguments to ufuncs only select the general DType but it did not help
+
         kde = gaussian_kde(x_vals)
         if bw_method is not None:
             kde.set_bandwidth(bw_method=bw_method)
 
         # Extract the bandwidth (for 1D, cov is 1×1)
-        bandwidth = float(np.sqrt(kde.covariance))
+        # bandwidth = float(np.sqrt(kde.covariance))
+        bandwidth = float(np.sqrt(kde.covariance.item())) # to fix the error TypeError: The `dtype` and `signature` arguments to ufuncs only select the general DType but it did not help
 
         # Setup x-values to evaluate
         if x_range is None:
@@ -77,7 +92,9 @@ def probability_density_curve(
         # --- Build big matrix (n × N) of kernel contributions ---
         # For each x in xs, compute gauss((x - each data point)/bw).
         # shape => xs[:,None] -> (n,1), x_vals[None,:] -> (1,N) => result (n,N).
-        Xdiff = (xs[:, None] - x_vals[None, :]) / bandwidth
+        # Xdiff = (xs[:, None] - x_vals[None, :]) / bandwidth
+        Xdiff = (xs[:, None] - x_vals[None, :]) / np.float64(bandwidth)  # Ensure float64 division to fix the error TypeError: The `dtype` and `signature` arguments to ufuncs only select the general DType
+
         Kmat = gauss(Xdiff)  # shape (n, N)
         # Scale by 1/(N*bw) so summing columns gives partial density for a subset
         Kmat /= (N * bandwidth)
